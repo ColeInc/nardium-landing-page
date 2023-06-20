@@ -1,6 +1,3 @@
-import VideoThumb from "@/public/images/hero-image-01.jpg";
-import ModalVideo from "@/components/modal-video";
-
 export default function Hero() {
     return (
         <section>
@@ -29,8 +26,8 @@ export default function Hero() {
                                 y2="577.921"
                                 gradientUnits="userSpaceOnUse"
                             >
-                                <stop stopColor="#5D5DFF" stopOpacity=".01" />
-                                <stop offset="1" stopColor="#5D5DFF" stopOpacity=".32" />
+                                <stop stopColor="#1e81eb" stopOpacity=".01" />
+                                <stop offset="1" stopColor="#1e81eb" stopOpacity=".32" />
                             </linearGradient>
                         </defs>
                         <path
@@ -49,13 +46,13 @@ export default function Hero() {
                         <h1 className="h1 mb-4" data-aos="fade-up">
                             Easily Navigate your Google Docs
                         </h1>
-                        <p className="text-xl text-gray-400 mb-8" data-aos="fade-up" data-aos-delay="200">
+                        <p className="text-xl text-gray-700 mb-8" data-aos="fade-up" data-aos-delay="200">
                             Nardium helps you to view and navigate your long Google Docs with ease.
                         </p>
                         <div className="max-w-xs mx-auto sm:max-w-none sm:flex sm:justify-center">
                             <div data-aos="fade-up" data-aos-delay="400">
                                 <a
-                                    className="btn text-white bg-purple-600 hover:bg-purple-700 w-full mb-4 rounded-md sm:w-auto sm:mb-0"
+                                    className="btn text-white bg-blue-500 hover:bg-blue-600 w-full mb-4 rounded-md sm:w-auto sm:mb-0"
                                     href="#0"
                                 >
                                     Add to Chrome

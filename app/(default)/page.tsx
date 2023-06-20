@@ -8,11 +8,13 @@ import Features from "@/components/features";
 import Newsletter from "@/components/newsletter";
 import Zigzag from "@/components/zigzag";
 import Testimonials from "@/components/testimonials";
+import ProductImage from "@/components/product-image";
 
 export default function Home() {
     return (
         <>
             <Hero />
+            <ProductImage />
             <Features />
             <Zigzag />
             <Testimonials />
