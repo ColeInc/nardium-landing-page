@@ -1,6 +1,9 @@
 export const metadata = {
     title: "Nardium",
     description: "Explore and Navigate your Google Docs with Ease! 🔍",
+    icons: {
+        icon: "/images/favicon.ico",
+    },
 };
 
 import Hero from "@/components/hero";
