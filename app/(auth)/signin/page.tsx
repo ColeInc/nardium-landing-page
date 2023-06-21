@@ -2,7 +2,7 @@ export const metadata = {
     title: "Sign in - Nardium",
     description: "Explore and Navigate your Google Docs with Ease! 🔍",
     icons: {
-        icon: "/images/favicon.ico",
+        icon: "/favicon.ico",
     },
 };
 
