@@ -9,7 +9,7 @@ export default function Header() {
                     {/* Site branding */}
                     <div className="shrink-0 px-2 ">
                         {/* Logo */}
-                        <Link href="/" as="/nardium-landing-page/" className="block" aria-label="Nardium">
+                        <Link href="/" as="/" className="block" aria-label="Nardium">
                             <svg
                                 width="20"
                                 height="38"
