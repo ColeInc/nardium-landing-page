@@ -53,7 +53,8 @@ export default function Hero() {
                             <div data-aos="fade-up" data-aos-delay="400">
                                 <a
                                     className="btn text-white bg-blue-500 hover:bg-blue-600 w-full mb-4 rounded-md sm:w-auto sm:mb-0"
-                                    href="#0"
+                                    href="https://chrome.google.com/webstore/detail/nardium-google-docs-navig/bmomoeeeljdicegfjigecnlmeifmhmam"
+                                    target="_blank"
                                 >
                                     Add to Chrome
                                 </a>

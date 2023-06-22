@@ -81,12 +81,12 @@ export default function SignIn() {
                                             <input type="checkbox" className="form-checkbox" />
                                             <span className="text-gray-400 ml-2">Keep me signed in</span>
                                         </label>
-                                        {/* <Link
+                                        <Link
                                             href="/reset-password"
                                             className="text-purple-600 hover:text-gray-200 transition duration-150 ease-in-out"
                                         >
                                             Forgot Password?
-                                        </Link> */}
+                                        </Link>
                                     </div>
                                 </div>
                             </div>
