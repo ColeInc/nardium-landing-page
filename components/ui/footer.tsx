@@ -12,7 +12,7 @@ export default function Footer() {
                         <div className="md:col-span-4 lg:col-span-5">
                             <div className="mb-2">
                                 {/* Logo */}
-                                <Link href="/" className="inline-block" aria-label="Cruip">
+                                <a href="/nardium-landing-page" className="block" aria-label="Nardium">
                                     <svg
                                         width="20"
                                         height="38"
@@ -26,7 +26,7 @@ export default function Footer() {
                                         <path d="M14 0V22L0 0H14Z" fill="#3F13EE" />
                                         <path d="M56 62L70 84H56V62Z" fill="#3F13EE" />
                                     </svg>
-                                </Link>
+                                </a>
                             </div>
                             <div className="text-gray-400">
                                 Lorem ipsum is placeholder text commonly used in the graphic, print, and publishing
