@@ -24,6 +24,9 @@ export default function Header() {
                                 <path d="M56 62L70 84H56V62Z" fill="#3F13EE" />
                             </svg>
                         </Link>
+                        <Link href="/nardium-landing-page" className="block" aria-label="Nardium">
+                            hardcoded
+                        </Link>
                     </div>
 
                     {/* Desktop navigation */}
