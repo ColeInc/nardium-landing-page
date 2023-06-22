@@ -1,5 +1,6 @@
 import Link from "next/link";
 import MobileMenu from "./mobile-menu";
+import { redirect } from "next/navigation";
 
 export default function Header() {
     return (
@@ -24,6 +25,28 @@ export default function Header() {
                                 <path d="M56 62L70 84H56V62Z" fill="#3F13EE" />
                             </svg>
                         </Link>
+                        <a href="/" className="block" aria-label="Nardium">
+                            <svg
+                                width="20"
+                                height="38"
+                                viewBox="0 0 70 84"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <rect width="14" height="84" fill="#1996F0" />
+                                <rect x="56" width="14" height="84" fill="#1996F0" />
+                                <path d="M14.4828 0L70 84H55.5172L0 0H14.4828Z" fill="#1996F0" />
+                                <path d="M14 0V22L0 0H14Z" fill="#3F13EE" />
+                                <path d="M56 62L70 84H56V62Z" fill="#3F13EE" />
+                            </svg>
+                        </a>
+                        <button
+                            onClick={() => {
+                                redirect("/nardium-landing-page");
+                            }}
+                        >
+                            Attempt 3
+                        </button>
                     </div>
 
                     {/* Desktop navigation */}
