@@ -2,9 +2,10 @@
 
 const nextConfig = {
     images: { unoptimized: true },
-    experimental: {
-        appDir: true,
-    },
+    // experimental: {
+    //     appDir: true,
+    // },
+    basePath: "/nardium-landing-page",
     output: "export",
     // Optional: Add a trailing slash to all paths `/about` -> `/about/`
     // trailingSlash: true,
