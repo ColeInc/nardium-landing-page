@@ -64,6 +64,15 @@ export default function Footer() {
                                             Programming Forms
                                         </Link>
                                     </li>
+                                    <li className="mb-1">
+                                        <Link
+                                            href="/privacy-policy"
+                                            className="text-gray-400 hover:text-gray-100 transition duration-150 ease-in-out"
+                                            aria-label="Nardium"
+                                        >
+                                            Privacy Policy
+                                        </Link>
+                                    </li>
                                 </ul>
                             </div>
 

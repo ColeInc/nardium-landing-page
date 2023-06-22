@@ -9,7 +9,7 @@ export default function Header() {
                     {/* Site branding */}
                     <div className="shrink-0 px-2 ">
                         {/* Logo */}
-                        <Link href="/" className="block" aria-label="Nardium">
+                        <Link href="/" as="/nardium-landing-page/" className="block" aria-label="Nardium">
                             <svg
                                 width="20"
                                 height="38"
@@ -23,9 +23,6 @@ export default function Header() {
                                 <path d="M14 0V22L0 0H14Z" fill="#3F13EE" />
                                 <path d="M56 62L70 84H56V62Z" fill="#3F13EE" />
                             </svg>
-                        </Link>
-                        <Link href="/privacy-policy" className="block" aria-label="Nardium">
-                            Privacy Policy
                         </Link>
                     </div>
 
