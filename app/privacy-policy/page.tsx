@@ -10,6 +10,23 @@ const PrivacyPolicy = () => {
                     This Privacy Policy governs the manner in which Nardium collects, uses, maintains, and discloses
                     information collected from users (each, a "User") of the Nardium Chrome extension.
                 </p>
+                <br />
+
+                <h2 className="font-medium text-md py-4">Limited Use Policy</h2>
+
+                <p>
+                    Nardium's use and transfer to any other app of information received from Google APIs will adhere
+                    to&nbsp;
+                    <a
+                        href="https://developers.google.com/terms/api-services-user-data-policy#additional_requirements_for_specific_api_scopes"
+                        target="_blank"
+                        className="text-blue-600 hover:underline hover:text-blue-700"
+                    >
+                        Google API Services User Data Policy
+                    </a>
+                    , including the Limited Use requirements.
+                </p>
+                <br />
 
                 <h2 className="font-medium text-md py-4">1. Personal identification information</h2>
 
