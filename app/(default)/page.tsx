@@ -12,6 +12,7 @@ import Newsletter from "@/components/newsletter";
 import Zigzag from "@/components/zigzag";
 import Testimonials from "@/components/testimonials";
 import ProductImage from "@/components/product-image";
+import CallToAction from "@/components/call-to-action";
 
 export default function Home() {
     return (
@@ -19,7 +20,8 @@ export default function Home() {
             <Hero />
             <ProductImage />
             <Features />
-            <Zigzag />
+            <CallToAction />
+            {/* <Zigzag /> */}
             {/* <Testimonials /> */}
             {/* <Newsletter /> */}
         </>
