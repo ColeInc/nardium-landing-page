@@ -3,7 +3,7 @@ import React from "react";
 const PrivacyPolicy = () => {
     return (
         <div className="flex justify-center">
-            <div className="max-w-4xl py-32">
+            <div className="max-w-4xl py-32 px-6 sm:px-8">
                 <h1 className="font-medium text-lg pb-4">Privacy Policy for Nardium</h1>
 
                 <p>
