@@ -20,8 +20,8 @@ export default function Home() {
             <ProductImage />
             <Features />
             <Zigzag />
-            <Testimonials />
-            <Newsletter />
+            {/* <Testimonials /> */}
+            {/* <Newsletter /> */}
         </>
     );
 }
