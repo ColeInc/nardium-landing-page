@@ -1,23 +1,3 @@
-// export const metadata = {
-//     title: "Nardium",
-//     description: "Explore and Navigate your Google Docs with Ease! 🔍",
-//     icons: {
-//         icon: "/favicon.ico",
-//     },
-// };
-
-// export const metadata: Metadata = {
-//     title: "Nardium",
-//     description: "Explore and Navigate your Google Docs with Ease! 🔍",
-//     icons: {
-//         icon: {
-//             url: "/favicon.ico",
-//             type: "image/ico",
-//         },
-//         shortcut: { url: "/favicon.ico", type: "image/ico" },
-//     },
-// };
-
 import Hero from "@/components/hero";
 import Features from "@/components/features";
 import Newsletter from "@/components/newsletter";

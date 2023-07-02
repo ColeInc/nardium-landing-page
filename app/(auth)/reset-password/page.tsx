@@ -1,9 +1,6 @@
 export const metadata = {
     title: "Nardium",
     description: "Explore and Navigate your Google Docs with Ease! 🔍",
-    icons: {
-        icon: "/favicon.ico",
-    },
 };
 
 import Link from "next/link";
