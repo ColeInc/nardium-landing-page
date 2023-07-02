@@ -21,14 +21,14 @@ const architects_daughter = Architects_Daughter({
 export const metadata = {
     title: "Nardium",
     description: "Explore and Navigate your Google Docs with Ease! 🔍",
-    icons: {
-        icon: "/favicon.ico",
-    },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
     return (
         <html lang="en">
+            <head>
+                <link rel="icon" href="/favicon.ico" />
+            </head>
             {/* <body className={`${inter.variable} ${architects_daughter.variable} font-inter antialiased bg-gray-900 text-gray-200 tracking-tight`}> */}
             <body
                 className={`${inter.variable} ${architects_daughter.variable} font-inter antialiased bg-gray-50 text-gray-700 tracking-tight`}
