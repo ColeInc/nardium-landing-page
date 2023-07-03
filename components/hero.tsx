@@ -4,7 +4,7 @@ export default function Hero() {
             <div className="max-w-6xl mx-auto px-4 sm:px-6 relative">
                 {/* Illustration behind hero content */}
                 <div
-                    className="absolute left-0 bottom-0 -ml-20 hidden lg:block pointer-events-none"
+                    className="absolute top-20 left-0 bottom-0 -ml-20 hidden lg:block pointer-events-none"
                     aria-hidden="true"
                     data-aos="fade-up"
                     data-aos-delay="400"

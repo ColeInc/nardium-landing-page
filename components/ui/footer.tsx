@@ -56,6 +56,15 @@ export default function Footer() {
                                     </li>
                                     <li className="mb-1">
                                         <Link
+                                            href="https://chrome.google.com/webstore/detail/nardium-google-docs-navig/bmomoeeeljdicegfjigecnlmeifmhmam"
+                                            target="_blank"
+                                            className="text-gray-400 hover:text-gray-100 transition duration-150 ease-in-out"
+                                        >
+                                            Leave a Review
+                                        </Link>
+                                    </li>
+                                    <li className="mb-1">
+                                        <Link
                                             href="https://github.com/ColeInc/nardium-landing-page"
                                             className="text-gray-400 hover:text-gray-100 transition duration-150 ease-in-out"
                                         >

@@ -44,6 +44,32 @@ export default function Header() {
                                     Sign up
                                 </Link>
                             </li>
+                            <li>
+                                <Link
+                                    href="/#features"
+                                    className="font-medium text-gray-700 hover:text-gray-500 px-4 py-3 flex items-center transition duration-150 ease-in-out"
+                                >
+                                    Features
+                                </Link>
+                            </li>
+                            <li>
+                                <Link
+                                    href="/faq"
+                                    title="Frequently Asked Questions"
+                                    className="font-medium text-gray-700 hover:text-gray-500 px-4 py-3 flex items-center transition duration-150 ease-in-out"
+                                >
+                                    FAQ
+                                </Link>
+                            </li>
+                            <li>
+                                <Link
+                                    href="/feature-requests"
+                                    title="Request a New Feature!"
+                                    className="font-medium text-gray-700 hover:text-gray-500 px-4 py-3 flex items-center transition duration-150 ease-in-out"
+                                >
+                                    Request!
+                                </Link>
+                            </li>
                         </ul>
                     </nav>
 

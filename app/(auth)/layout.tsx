@@ -1,17 +1,11 @@
-import PageIllustration from '@/components/page-illustration'
+import PageIllustration from "@/components/page-illustration";
 
-export default function AuthLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {  
-  return (
-    <main className="grow">
+export default function AuthLayout({ children }: { children: React.ReactNode }) {
+    return (
+        <main className="grow">
+            <PageIllustration />
 
-      <PageIllustration />
-
-      {children}
-
-    </main>
-  )
+            {children}
+        </main>
+    );
 }
