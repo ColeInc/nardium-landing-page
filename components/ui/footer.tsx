@@ -7,10 +7,9 @@ export default function Footer() {
             <div className="py-12 md:py-16">
                 <div className="max-w-6xl mx-auto px-4 sm:px-6">
                     {/* Top area: Blocks */}
-                    {/* <div className="grid md:grid-cols-12 gap-8 lg:gap-20 mb-8 md:mb-12"> */}
-                    <div className="flex justify-between mb-8 md:mb-12">
-                        {/* 1st block */}
-                        <div className="">
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-y-6 mb-8 md:mb-12">
+                        {/* 1st column */}
+                        <div>
                             <div className="mb-2">
                                 {/* Logo */}
                                 <a href="/nardium-landing-page" className="block" aria-label="Nardium">
@@ -31,32 +30,34 @@ export default function Footer() {
                             </div>
                             <div className="text-gray-600 text-sm">&copy; Nardium App 2023</div>
                         </div>
-                        {/* 2nd, 3rd and 4th blocks */}
-                        <div className="flex flex-col justify-between items-center flex-1 p-4 max-w-[400px] w-full border border-opacity-500 border-purple-200 border-4 rounded-xl border-double">
-                            <p className="text-md text-center leading-tight text-black">
-                                Help us continue developing Nardium, and keep it free and accessible to everyone!
-                            </p>
-                            <button className="bg-purple-600 hover:bg-blue-700 text-gray-800 font-medium text-white py-3 px-12 rounded-lg inline-flex items-center gap-3">
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="16"
-                                    height="16"
-                                    viewBox="0 0 24 24"
-                                    className="fill-white"
+
+                        {/* 2nd column */}
+                        <div className="order-3 md:order-2 col-span-2 md:col-span-1 w-full flex justify-center">
+                            <div className="flex flex-col justify-between items-center flex-1 p-4 lg:px-8 max-w-[400px] w-full border-opacity-500 border-purple-200 border-4 rounded-xl border-double">
+                                <p className="text-md text-center leading-tight text-black pb-4">
+                                    Help us continue developing Nardium, and keep it free and accessible to everyone!
+                                </p>
+                                <Link
+                                    className="bg-purple-600 hover:bg-purple-700 font-medium text-white py-3 px-12 rounded-lg inline-flex items-center gap-3"
+                                    href="https://donorbox.org/nardium?default_interval=o"
+                                    target="_blank"
                                 >
-                                    <path d="M6.28 3c3.236.001 4.973 3.491 5.72 5.031.75-1.547 2.469-5.021 5.726-5.021 2.058 0 4.274 1.309 4.274 4.182 0 3.442-4.744 7.851-10 13-5.258-5.151-10-9.559-10-13 0-2.676 1.965-4.193 4.28-4.192zm.001-2c-3.183 0-6.281 2.187-6.281 6.192 0 4.661 5.57 9.427 12 15.808 6.43-6.381 12-11.147 12-15.808 0-4.011-3.097-6.182-6.274-6.182-2.204 0-4.446 1.042-5.726 3.238-1.285-2.206-3.522-3.248-5.719-3.248z" />
-                                </svg>
-                                <span>Donate</span>
-                            </button>
-                            {/* <div className="relative">
-                                <span className="absolute inset-0 bg-green-200 opacity-50"></span>
-                                <div className="border border-green-500 rounded-lg p-4">
-                                    <h1>bean</h1>
-                                </div>
-                            </div> */}
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        width="16"
+                                        height="16"
+                                        viewBox="0 0 24 24"
+                                        className="fill-white"
+                                    >
+                                        <path d="M6.28 3c3.236.001 4.973 3.491 5.72 5.031.75-1.547 2.469-5.021 5.726-5.021 2.058 0 4.274 1.309 4.274 4.182 0 3.442-4.744 7.851-10 13-5.258-5.151-10-9.559-10-13 0-2.676 1.965-4.193 4.28-4.192zm.001-2c-3.183 0-6.281 2.187-6.281 6.192 0 4.661 5.57 9.427 12 15.808 6.43-6.381 12-11.147 12-15.808 0-4.011-3.097-6.182-6.274-6.182-2.204 0-4.446 1.042-5.726 3.238-1.285-2.206-3.522-3.248-5.719-3.248z" />
+                                    </svg>
+                                    <span>Donate</span>
+                                </Link>
+                            </div>
                         </div>
 
-                        <div className="">
+                        {/* 3rd column */}
+                        <div className="md:order-3">
                             <div className="text-sm text-right">
                                 <h6 className="text-black font-medium mb-1">Resources</h6>
                                 <ul>
