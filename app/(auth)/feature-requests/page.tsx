@@ -3,18 +3,21 @@
 import emailjs from "@emailjs/browser";
 import { ChangeEvent, FormEvent, LegacyRef, useEffect, useRef, useState } from "react";
 
-const emailjsPublicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY ?? "";
-const emailjsTemplateKey = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_KEY ?? "";
-const emailjsServiceKey = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_KEY ?? "";
+const EMAILJS_PUBLIC_KEY = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY ?? "";
+const EMAILJS_TEMPLATE_KEY = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_KEY ?? "";
+const EMAILJS_SERVICE_KEY = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_KEY ?? "";
+console.log("1st", EMAILJS_PUBLIC_KEY);
+console.log("2nd", EMAILJS_TEMPLATE_KEY);
+console.log("3rd", EMAILJS_SERVICE_KEY);
 
-console.log("fetched deeze", emailjsPublicKey, emailjsTemplateKey, emailjsServiceKey);
+console.log("fetched deeze", EMAILJS_PUBLIC_KEY, EMAILJS_TEMPLATE_KEY, EMAILJS_SERVICE_KEY);
 
 export default function FeatureRequests() {
     const [featureRequest, setFeatureRequest] = useState("");
     const emailRef = useRef<HTMLInputElement>(null);
     const bodyRef = useRef<HTMLTextAreaElement>(null);
 
-    useEffect(() => emailjs.init(emailjsPublicKey), []);
+    useEffect(() => emailjs.init(EMAILJS_PUBLIC_KEY), []);
 
     const handleInputChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
         setFeatureRequest(e.target.value);
@@ -29,13 +32,13 @@ export default function FeatureRequests() {
 
         // fire email to support letting them know of new feature request!
         emailjs.send(
-            emailjsServiceKey,
-            emailjsTemplateKey,
+            EMAILJS_SERVICE_KEY,
+            EMAILJS_TEMPLATE_KEY,
             {
                 sender: emailRef.current?.value,
                 message: bodyRef.current?.value,
             },
-            emailjsPublicKey
+            EMAILJS_PUBLIC_KEY
         );
 
         if (emailRef.current) {
