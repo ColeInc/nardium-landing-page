@@ -7,7 +7,6 @@ import Banner from "@/components/banner";
 import Script from "next/script";
 
 const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_MEASUREMENT_ID;
-console.log("4th", GA_MEASUREMENT_ID);
 
 const inter = Inter({
     subsets: ["latin"],
