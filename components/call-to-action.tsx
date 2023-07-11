@@ -1,10 +1,10 @@
-import Image from "next/image";
+"use client";
 
-import FeatImage01 from "@/public/images/features-03-image-01.png";
-import FeatImage02 from "@/public/images/features-03-image-02.png";
-import FeatImage03 from "@/public/images/features-03-image-03.png";
+import useGoogleAnalytics from "@/hooks/useGoogleAnalytics";
 
 export default function CallToAction() {
+    const { trackClickEvent } = useGoogleAnalytics();
+
     return (
         <section>
             <div className="max-w-6xl mx-auto px-4 sm:px-6">
@@ -23,6 +23,9 @@ export default function CallToAction() {
                                     className="btn text-white bg-blue-500 hover:bg-blue-600 w-full mt-8 rounded-md sm:w-auto sm:mb-0"
                                     href="https://chrome.google.com/webstore/detail/nardium-google-docs-navig/bmomoeeeljdicegfjigecnlmeifmhmam"
                                     target="_blank"
+                                    onClick={() => {
+                                        trackClickEvent("Footer CTA Button");
+                                    }}
                                 >
                                     Add Nardium Now
                                 </a>

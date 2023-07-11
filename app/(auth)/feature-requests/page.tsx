@@ -1,16 +1,11 @@
 "use client";
 
 import emailjs from "@emailjs/browser";
-import { ChangeEvent, FormEvent, LegacyRef, useEffect, useRef, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
 
 const EMAILJS_PUBLIC_KEY = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY ?? "";
 const EMAILJS_TEMPLATE_KEY = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_KEY ?? "";
 const EMAILJS_SERVICE_KEY = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_KEY ?? "";
-console.log("1st", EMAILJS_PUBLIC_KEY);
-console.log("2nd", EMAILJS_TEMPLATE_KEY);
-console.log("3rd", EMAILJS_SERVICE_KEY);
-
-console.log("fetched deeze", EMAILJS_PUBLIC_KEY, EMAILJS_TEMPLATE_KEY, EMAILJS_SERVICE_KEY);
 
 export default function FeatureRequests() {
     const [featureRequest, setFeatureRequest] = useState("");

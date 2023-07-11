@@ -1,4 +1,10 @@
+"use client";
+
+import useGoogleAnalytics from "@/hooks/useGoogleAnalytics";
+
 export default function Hero() {
+    const { trackClickEvent } = useGoogleAnalytics();
+
     return (
         <section>
             <div className="max-w-6xl mx-auto px-4 sm:px-6 relative">
@@ -55,6 +61,9 @@ export default function Hero() {
                                     className="btn text-white bg-blue-500 hover:bg-blue-600 w-full mb-4 rounded-md sm:w-auto sm:mb-0"
                                     href="https://chrome.google.com/webstore/detail/nardium-google-docs-navig/bmomoeeeljdicegfjigecnlmeifmhmam"
                                     target="_blank"
+                                    onClick={() => {
+                                        trackClickEvent("Hero Button");
+                                    }}
                                 >
                                     Add to Chrome
                                 </a>
