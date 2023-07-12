@@ -1,3 +1,5 @@
+import { useEffect } from "react";
+
 declare let window: CustomWindow;
 
 export interface CustomWindow extends Window {
@@ -5,9 +7,19 @@ export interface CustomWindow extends Window {
 }
 
 const useGoogleAnalytics = () => {
-    window.dataLayer = window.dataLayer || [];
+    useEffect(() => {
+        if (typeof window === "undefined") {
+            return;
+        }
+
+        window.dataLayer = window.dataLayer || [];
+    }, []);
 
     function gtag(...args: any[]): void {
+        if (!window || !window.dataLayer) {
+            console.log("Failed to initialise Google Analytics.");
+            return;
+        }
         window.dataLayer.push(...args);
     }
 
@@ -21,6 +33,7 @@ const useGoogleAnalytics = () => {
             clickType: itemName,
         };
 
+        console.log("triggering dis", "event", "click", clickEvent);
         gtag("event", "click", clickEvent);
     };
 
