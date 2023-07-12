@@ -1,22 +1,27 @@
 declare let window: CustomWindow;
 
 export interface CustomWindow extends Window {
-    gtag: any;
+    dataLayer: any[];
 }
 
 const useGoogleAnalytics = () => {
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag(...args: any[]): void {
+        window.dataLayer.push(...args);
+    }
+
     const trackClickEvent = (itemName: string) => {
-        if (!window.gtag) {
+        if (!window.dataLayer) {
             console.log("No Google Analytics Found.");
             return;
         }
 
         const clickEvent = {
-            event: "click",
             clickType: itemName,
         };
 
-        window.gtag("event", clickEvent);
+        gtag("event", "click", clickEvent);
     };
 
     return { trackClickEvent };
