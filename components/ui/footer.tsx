@@ -1,7 +1,10 @@
 import React from "react";
 import Link from "next/link";
+import useGoogleAnalytics from "@/hooks/useGoogleAnalytics";
 
 export default function Footer() {
+    const { trackClickEvent } = useGoogleAnalytics();
+
     return (
         <footer>
             <div className="py-12 md:py-16">
@@ -41,6 +44,9 @@ export default function Footer() {
                                     className="bg-purple-600 hover:bg-purple-700 font-medium text-white py-3 px-12 rounded-lg inline-flex items-center gap-3"
                                     href="https://donorbox.org/nardium?default_interval=o"
                                     target="_blank"
+                                    onClick={() => {
+                                        trackClickEvent("Donate Button");
+                                    }}
                                 >
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"

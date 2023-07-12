@@ -88,13 +88,13 @@ export default function MobileMenu() {
                         </Link>
                     </li> */}
                     <li>
-                        <Link
-                            href="/#features"
+                        <a
+                            href="/nardium-landing-page/#features"
                             className="font-medium text-gray-700 hover:text-gray-500 px-4 py-3 flex items-center transition duration-150 ease-in-out"
                             onClick={() => setMobileNavOpen(false)}
                         >
                             Features
-                        </Link>
+                        </a>
                     </li>
                     <li>
                         <Link
