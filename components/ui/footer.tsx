@@ -31,7 +31,7 @@ export default function Footer() {
                                     </svg>
                                 </a>
                             </div>
-                            <div className="text-gray-600 text-sm">&copy; Nardium App 2023</div>
+                            {/* <div className="text-gray-600 text-sm">&copy; Nardium App 2023</div> */}
                         </div>
 
                         {/* 2nd column */}
@@ -152,7 +152,7 @@ export default function Footer() {
                         </ul>
 
                         {/* Copyrights note */}
-                        <div className="text-gray-400 text-xs mr-4">Designed by Cole.</div>
+                        <div className="text-gray-400 text-xs mr-4">&copy; Nardium App 2023</div>
                     </div>
                 </div>
             </div>

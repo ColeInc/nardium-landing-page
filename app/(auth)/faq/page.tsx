@@ -27,6 +27,7 @@ export default function FAQ() {
                             permissions it will then be able to identify all the headings within your document and
                             display them within the navigation panel accordingly.
                         </p>
+
                         <h2 className="h2 text-gray-800 pb-4">
                             Is Nardium available for other browsers besides Google Chrome?
                         </h2>
@@ -35,6 +36,7 @@ export default function FAQ() {
                             Microsoft Edge, Opera, Brave, Vivaldi, SRWare Iron, Epic Privacy Browser, Torch Browser,
                             Comodo Dragon.
                         </p>
+
                         <h2 className="h2 text-gray-800 pb-4">
                             Does Nardium require any additional permissions or access to my personal information?
                         </h2>
@@ -43,6 +45,17 @@ export default function FAQ() {
                             Google Docs. It does not access or collect any personal information beyond what is required
                             for its intended purpose which is to display your document's headings in a simple manor.
                         </p>
+
+                        <h2 className="h2 text-gray-800 pb-4">Nardium has stopped working on my device :(</h2>
+                        <p className="pb-16">
+                            If a user clears local storage on their device, it may affect Nardium's ability to run as
+                            expected. The easiest thing to do if you experience this problem, is to go into your Google
+                            Account's settings, find the "Third-party apps & services" section, find Nardium, and click
+                            "Delete all connections with this App". This will essentially reset your connection with the
+                            app, and you can then go ahead and install a fresh version of it again which should renew
+                            all your previous settings and get it back to working order.
+                        </p>
+
                         <h2 className="h2 text-gray-800 pb-4">
                             Can I disable or uninstall Nardium if I no longer need it?
                         </h2>
