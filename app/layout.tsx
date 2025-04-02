@@ -1,9 +1,10 @@
 import "./css/style.css";
-
+import type { Metadata } from 'next';
 import { Inter, Architects_Daughter } from "next/font/google";
+import './globals.css';
+import { UserProvider } from '@/context/UserContext';
 
 import Header from "@/components/ui/header";
-import Banner from "@/components/banner";
 import Script from "next/script";
 
 const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_MEASUREMENT_ID;
@@ -21,9 +22,9 @@ const architects_daughter = Architects_Daughter({
     display: "swap",
 });
 
-export const metadata = {
-    title: "Nardium",
-    description: "Explore and Navigate your Google Docs with Ease! 🔍",
+export const metadata: Metadata = {
+    title: "Nardium - Google Docs Outline Tool",
+    description: "A powerful tool for creating outlines in Google Docs",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
@@ -48,11 +49,14 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <body
                 className={`${inter.variable} ${architects_daughter.variable} font-inter antialiased bg-gray-50 text-gray-700 tracking-tight`}
             >
-                <div className="flex flex-col min-h-screen overflow-hidden">
-                    <Header />
-                    {children}
-                    {/* <Banner /> */}
-                </div>
+                <UserProvider>
+                    {/* <div className="flex flex-col min-h-screen overflow-hidden bg-gray-900"> */}
+                    <div className="flex flex-col min-h-screen overflow-hidden">
+                        <Header />
+                        {children}
+                        {/* <Banner /> */}
+                    </div>
+                </UserProvider>
             </body>
         </html>
     );

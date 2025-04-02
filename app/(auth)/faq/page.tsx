@@ -1,6 +1,4 @@
 import Link from "next/link";
-import Image from "next/image";
-import GoogleLogo from "@/public/images/google-logo.svg";
 
 export const metadata = {
     title: "Nardium",
@@ -64,6 +62,16 @@ export default function FAQ() {
                             extensions settings. Simply locate Nardium in the list of installed extensions and choose
                             the appropriate action to remove it.
                         </p>
+
+                        <div className="flex justify-center mt-4 mb-8">
+                            <Link
+                                href="/feature-requests"
+                                title="Request a New Feature!"
+                                className="inline-block font-medium text-white bg-blue-500 hover:bg-blue-600 px-8 py-4 rounded-xl text-lg transition-all duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg"
+                            >
+                                Request a Feature!
+                            </Link>
+                        </div>
                     </div>
                 </div>
             </div>
