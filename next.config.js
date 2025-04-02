@@ -2,7 +2,8 @@
 
 const nextConfig = {
     images: { unoptimized: true },
-    basePath: "/nardium-landing-page",
+    // basePath: "/nardium-landing-page",
+    // basePath: "/",
     output: "export",
     env: {
         NEXT_PUBLIC_EMAILJS_PUBLIC_KEY: "qt3ZWXcX3l_wiAFhi",

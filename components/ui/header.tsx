@@ -1,8 +1,36 @@
+'use client'
+
 import Link from "next/link";
 import MobileMenu from "./mobile-menu";
-import { redirect } from "next/navigation";
+import SignInWithGoogle from "@/components/SignInWithGoogle";
+import { useUser } from "@/context/UserContext";
+import { useState, useEffect, useRef } from "react";
 
 export default function Header() {
+    const { user, isLoading, signOut } = useUser();
+    const [mounted, setMounted] = useState(false);
+    const [dropdownOpen, setDropdownOpen] = useState(false);
+    const dropdownRef = useRef<HTMLLIElement>(null);
+
+    // Prevent hydration mismatch
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    // Handle clicks outside dropdown
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+                setDropdownOpen(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, []);
+
     return (
         <header className="absolute w-full z-30">
             <div className="max-w-6xl mx-auto px-4 sm:px-6">
@@ -10,7 +38,8 @@ export default function Header() {
                     {/* Site branding */}
                     <div className="shrink-0 px-2 ">
                         {/* Logo */}
-                        <a href="/nardium-landing-page" className="block" aria-label="Nardium">
+                        {/* <a href="/nardium-landing-page" className="block" aria-label="Nardium"> */}
+                        <a href="/" className="block" aria-label="Nardium">
                             <svg
                                 width="20"
                                 height="38"
@@ -61,7 +90,7 @@ export default function Header() {
                                     FAQ
                                 </Link>
                             </li>
-                            <li>
+                            {/* <li>
                                 <Link
                                     href="/feature-requests"
                                     title="Request a New Feature!"
@@ -69,7 +98,59 @@ export default function Header() {
                                 >
                                     Request!
                                 </Link>
-                            </li>
+                            </li> */}
+
+                            {mounted && !isLoading && (
+                                <>
+                                    {user ? (
+                                        <>
+                                            <li>
+                                                <Link
+                                                    href="/dashboard"
+                                                    className="font-medium text-gray-700 hover:text-gray-500 px-4 py-3 flex items-center transition duration-150 ease-in-out"
+                                                >
+                                                    Dashboard
+                                                </Link>
+                                            </li>
+                                            <li className="relative" ref={dropdownRef}>
+                                                <button
+                                                    onClick={() => setDropdownOpen(!dropdownOpen)}
+                                                    className="ml-3 flex items-center focus:outline-none"
+                                                >
+                                                    {user.user_metadata?.avatar_url ? (
+                                                        <img
+                                                            src={user.user_metadata.avatar_url}
+                                                            alt={user.email || "User"}
+                                                            className="h-10 w-10 rounded-full object-cover"
+                                                        />
+                                                    ) : (
+                                                        <div className="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
+                                                            <span className="text-blue-600 text-lg font-semibold">
+                                                                {user.email?.charAt(0).toUpperCase() || 'U'}
+                                                            </span>
+                                                        </div>
+                                                    )}
+                                                </button>
+
+                                                {dropdownOpen && (
+                                                    <div className="absolute right-0 mt-0 w-48 bg-white rounded-md shadow-lg py-1 z-10">
+                                                        <button
+                                                            onClick={signOut}
+                                                            className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                                                        >
+                                                            Sign Out
+                                                        </button>
+                                                    </div>
+                                                )}
+                                            </li>
+                                        </>
+                                    ) : (
+                                        <li className="ml-3">
+                                            <SignInWithGoogle />
+                                        </li>
+                                    )}
+                                </>
+                            )}
                         </ul>
                     </nav>
 

@@ -14,7 +14,7 @@ export default function CallToAction() {
                         <h1 className="h2 mb-4">Discover a new level of Document Navigation</h1>
                         <p className="text-xl text-gray-600">
                             Seamlessly explore and navigate your document's hierarchy like never before. Add To Chrome
-                            now for a clear and streamlined editing experience. 💪💻
+                            now for a clear and streamlined editing experience.
                         </p>
 
                         <div className="max-w-xs mx-auto sm:max-w-none sm:flex sm:justify-center">
@@ -27,7 +27,7 @@ export default function CallToAction() {
                                         trackClickEvent("Footer CTA Button");
                                     }}
                                 >
-                                    Add Nardium Now
+                                    Add to Chrome
                                 </a>
                             </div>
                         </div>
