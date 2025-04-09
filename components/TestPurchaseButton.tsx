@@ -15,10 +15,19 @@ export default function TestPurchaseButton() {
             return
         }
 
+        // Check if we have the required user information
+        if (!user.email) {
+            setError('Unable to retrieve your email. Please log out and sign in again.')
+            return
+        }
+
         try {
             setIsProcessing(true)
             setError(null)
             setMessage(null)
+
+            // Get Google sub ID from user object 
+            const sub = user.id // This is the Google OAuth sub ID
 
             // Call backend API to create a Stripe checkout session
             const response = await fetch('/api/test-stripe-purchase', {
@@ -28,7 +37,9 @@ export default function TestPurchaseButton() {
                     'Authorization': `Bearer ${accessToken}`
                 },
                 body: JSON.stringify({
-                    userId: user.id
+                    userId: user.id,
+                    email: user.email,
+                    sub: sub
                 })
             })
 

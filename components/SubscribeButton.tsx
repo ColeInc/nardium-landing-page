@@ -9,8 +9,14 @@ export default function SubscribeButton() {
     const [error, setError] = useState<string | null>(null)
 
     const handleSubscribe = async () => {
-        if (!user || !accessToken) {
+        if (!user || !user.email) {
             setError('You must be signed in to subscribe')
+            return
+        }
+
+        // Check if we have the Google sub ID
+        if (!user.id || !user.email) {
+            setError('Unable to verify your account information. Please log out and try again.')
             return
         }
 
@@ -18,16 +24,19 @@ export default function SubscribeButton() {
             setIsProcessing(true)
             setError(null)
 
-            // Call backend API to create a Stripe checkout session
+            // Get Google sub ID from user object 
+            const sub = user.id // This assumes user.id contains the Google OAuth sub
+
+            // Call API to create a Stripe checkout session
             const response = await fetch('/api/create-stripe-session', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${accessToken}`
                 },
                 body: JSON.stringify({
                     userId: user.id,
-                    email: user.email
+                    email: user.email,
+                    sub: sub // Add the sub ID to the request
                 })
             })
 
