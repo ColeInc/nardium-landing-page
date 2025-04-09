@@ -3,6 +3,7 @@
 import Link from "next/link";
 import MobileMenu from "./mobile-menu";
 import SignInWithGoogle from "@/components/SignInWithGoogle";
+import TestPurchaseButton from "@/components/TestPurchaseButton";
 import { useUser } from "@/context/UserContext";
 import { useState, useEffect, useRef } from "react";
 
@@ -112,6 +113,9 @@ export default function Header() {
                                                     Dashboard
                                                 </Link>
                                             </li>
+                                            <li className="ml-2">
+                                                <TestPurchaseButton />
+                                            </li>
                                             <li className="relative" ref={dropdownRef}>
                                                 <button
                                                     onClick={() => setDropdownOpen(!dropdownOpen)}
@@ -145,9 +149,11 @@ export default function Header() {
                                             </li>
                                         </>
                                     ) : (
-                                        <li className="ml-3">
-                                            <SignInWithGoogle />
-                                        </li>
+                                        <>
+                                            <li className="ml-3">
+                                                <SignInWithGoogle />
+                                            </li>
+                                        </>
                                     )}
                                 </>
                             )}
