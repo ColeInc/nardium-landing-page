@@ -1,43 +1,20 @@
 import { NextResponse } from 'next/server'
 import Stripe from 'stripe'
-import { createClient } from '@supabase/supabase-js'
 
 // Initialize Stripe
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
     apiVersion: '2023-10-16' as any,
 })
 
-// Initialize Supabase admin client (for server-side)
-const supabaseAdmin = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY || '' // You'll need to add this to your .env files
-)
-
 export async function POST(request: Request) {
     try {
-        // Get bearer token from request headers
-        const authHeader = request.headers.get('authorization')
-
-        if (!authHeader || !authHeader.startsWith('Bearer ')) {
-            return NextResponse.json({ message: 'Unauthorized' }, { status: 401 })
-        }
-
-        const accessToken = authHeader.split(' ')[1]
-
-        // Verify the token with Supabase
-        const { data: { user }, error } = await supabaseAdmin.auth.getUser(accessToken)
-
-        if (error || !user) {
-            return NextResponse.json({ message: 'Invalid token' }, { status: 401 })
-        }
-
         // Parse request body
         const body = await request.json()
-        const { userId, email } = body
+        const { userId, email, sub } = body
 
-        // Verify that the token's user ID matches the requested user ID
-        if (user.id !== userId) {
-            return NextResponse.json({ message: 'User ID mismatch' }, { status: 403 })
+        // Validate required fields
+        if (!email || !sub) {
+            return NextResponse.json({ message: 'Email and sub ID are required' }, { status: 400 })
         }
 
         // Create or retrieve a Stripe customer
@@ -56,11 +33,23 @@ export async function POST(request: Request) {
             const newCustomer = await stripe.customers.create({
                 email: email,
                 metadata: {
-                    supabaseUserId: userId,
+                    userId: userId,
+                    sub: sub,
                 },
             })
             customerId = newCustomer.id
         }
+
+        // Prepare metadata for Stripe Checkout
+        const metadata = {
+            userId: userId,
+            email: email,
+            sub: sub,
+            subscription_tier: 'premium'
+        }
+
+        // Log the metadata being sent to Stripe
+        console.log('Sending metadata to Stripe Checkout:', JSON.stringify(metadata, null, 2))
 
         // Create a Stripe checkout session
         const session = await stripe.checkout.sessions.create({
@@ -86,9 +75,7 @@ export async function POST(request: Request) {
             mode: 'subscription',
             success_url: `${request.headers.get('origin')}/success?session_id={CHECKOUT_SESSION_ID}`,
             cancel_url: `${request.headers.get('origin')}/`,
-            metadata: {
-                supabaseUserId: userId,
-            },
+            metadata: metadata,
         })
 
         return NextResponse.json({ checkoutUrl: session.url })
