@@ -1,21 +1,101 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { extractAuthHeader, getAuthResources } from '../services/authUtils';
+import { JWTPayload } from '../services/jwtService';
+
+
+// Extending NextRequest to include the user property
+declare module 'next/server' {
+    interface NextRequest {
+        user?: JWTPayload;
+    }
+}
 
 /**
- * Validates an API request by checking for a valid API key
+ * Validates an API request by checking for a valid JWT token
  * @param req The Next.js request object
- * @returns A NextResponse with 401 status if invalid, null if valid
+ * @returns A NextResponse with 401/500 status if invalid, null if valid
  */
 export function validateApiRequest(req: NextRequest) {
-    const apiKey = req.headers.get('x-api-key');
-    const validApiKey = process.env.VALID_API_KEY;
+    try {
+        // Use the helper function to extract the authorization header
+        const authHeader = extractAuthHeader(req);
 
-    if (!apiKey || apiKey !== validApiKey) {
+        if (!authHeader || !authHeader.startsWith('Bearer ')) {
+            console.log('[validateApiRequest] Authorization header missing or invalid format');
+            return NextResponse.json(
+                { error: 'Unauthorized: Missing or invalid token' },
+                { status: 401 }
+            );
+        }
+
+        const token = authHeader.split(' ')[1];
+        console.log('[validateApiRequest] Token extracted, length:', token.length);
+
+        // Initialize resources if not already initialized
+        console.log('[validateApiRequest] Getting resources...');
+        const resources = getAuthResources();
+
+        const jwtService = resources?.jwtService;
+        console.log('[validateApiRequest] JWT service available:', !!jwtService);
+
+        if (!jwtService) {
+            console.error('[validateApiRequest] JWT service not initialized');
+            return NextResponse.json(
+                { error: 'Server error: Authentication service unavailable' },
+                { status: 500 }
+            );
+        }
+
+        try {
+            console.log('[validateApiRequest] Verifying JWT token...');
+            // Verify JWT token
+            const payload = jwtService.verifyToken(token);
+            console.log('[validateApiRequest] Token verified successfully for user:', payload.user_id);
+
+            // Add user data to request
+            (req as any).user = {
+                user_id: payload.user_id,
+                email: payload.email,
+                sessionId: payload.sessionId,
+                subscription_tier: payload.subscription_tier
+            };
+
+            // Check if token needs refresh (handled by client)
+            console.log('[validateApiRequest] Checking if token needs refresh...');
+            const refreshedToken = jwtService.refreshTokenIfNeeded(token);
+
+            // Create response object with potential new token
+            const response = NextResponse.next();
+
+            if (refreshedToken) {
+                console.log('[validateApiRequest] Token refreshed, setting header');
+                response.headers.set('X-New-Token', refreshedToken);
+            }
+
+            // Check API key if needed (optional - remove if not using API keys)
+            // const apiKey = req.headers.get('x-api-key');
+            // const validApiKey = process.env.API_KEY;
+            // if (validApiKey && (!apiKey || apiKey !== validApiKey)) {
+            //     return NextResponse.json(
+            //         { error: 'Unauthorized: Invalid or missing API key' },
+            //         { status: 401 }
+            //     );
+            // }
+
+            // Request is valid
+            return response;
+        } catch (error) {
+            console.error('[validateApiRequest] Token verification failed:', error);
+            return NextResponse.json(
+                { error: 'Unauthorized: Invalid token' },
+                { status: 401 }
+            );
+        }
+    } catch (error) {
+        console.error('[validateApiRequest] Unexpected error:', error);
         return NextResponse.json(
-            { error: 'Unauthorized: Invalid or missing API key' },
-            { status: 401 }
+            { error: 'Server error' },
+            { status: 500 }
         );
     }
-
-    // Request is valid
-    return null;
 } 
