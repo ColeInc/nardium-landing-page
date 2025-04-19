@@ -1,4 +1,4 @@
-import { createClient } from '../supabaseClient';
+import { getSupabaseAdmin } from './initialiseResources';
 
 // Define User type
 export interface User {
@@ -11,14 +11,13 @@ export interface User {
     updated_at?: string;
 }
 
-// Use the supabaseAdmin from the function
-const supabaseAdmin = createClient();
-
 export class SupabaseAuthService {
     private encryptionService: any; // Use 'any' to bypass type checking conflicts
+    private supabaseAdmin: any;
 
     constructor(encryptionService: any) {
         this.encryptionService = encryptionService;
+        this.supabaseAdmin = getSupabaseAdmin();
     }
 
     /**
@@ -26,7 +25,7 @@ export class SupabaseAuthService {
      */
     async createOrUpdateUser(email: string, googleId: string, encryptedRefreshToken: string): Promise<User> {
         // First, check if user exists
-        const { data: existingUser } = await supabaseAdmin
+        const { data: existingUser } = await this.supabaseAdmin
             .from('users')
             .select('*')
             .eq('email', email)
@@ -34,7 +33,7 @@ export class SupabaseAuthService {
 
         if (existingUser) {
             // Update existing user with new refresh token
-            const { data, error } = await supabaseAdmin
+            const { data, error } = await this.supabaseAdmin
                 .from('users')
                 .update({
                     google_id: googleId,
@@ -50,7 +49,7 @@ export class SupabaseAuthService {
         }
 
         // Create new user
-        const { data, error } = await supabaseAdmin
+        const { data, error } = await this.supabaseAdmin
             .from('users')
             .insert({
                 email,
@@ -67,7 +66,7 @@ export class SupabaseAuthService {
     }
 
     async getUserByEmail(email: string): Promise<User | null> {
-        const { data, error } = await supabaseAdmin
+        const { data, error } = await this.supabaseAdmin
             .from('users')
             .select('*')
             .eq('email', email)

@@ -1,56 +1,11 @@
 import { SupabaseClient } from '@supabase/supabase-js';
-import { GoogleAuthService, EncryptedToken } from './googleAuthService';
+import { GoogleAuthService } from './googleAuthService';
 import { TokenService } from './tokenService';
 import { SupabaseAuthService } from './supabaseAuthService';
 import { JwtService } from './jwtService';
 import Stripe from 'stripe';
-import { createClient } from '../supabaseClient';
-
-/**
- * Simple encryption service for Next.js
- */
-export class EncryptionService {
-    private ENCRYPTION_KEY = process.env.ENCRYPTION_KEY || 'dev-encryption-key';
-
-    encrypt(data: string): string {
-        // For a real implementation, use a proper encryption library
-        console.log('Encrypting data');
-        return `encrypted_${data}`;
-    }
-
-    decrypt(encryptedData: string): string {
-        // For a real implementation, use a proper decryption method
-        console.log('Decrypting data');
-        if (encryptedData.startsWith('encrypted_')) {
-            return encryptedData.substring(10);
-        }
-        return encryptedData;
-    }
-}
-
-/**
- * Adapter for EncryptionService that implements the interface expected by GoogleAuthService
- */
-class GoogleEncryptionAdapter {
-    private encryptionService: EncryptionService;
-
-    constructor(encryptionService: EncryptionService) {
-        this.encryptionService = encryptionService;
-    }
-
-    encrypt(text: string): EncryptedToken {
-        const encrypted = this.encryptionService.encrypt(text);
-        return {
-            iv: 'dummy-iv',
-            encrypted: encrypted,
-            authTag: 'dummy-tag'
-        };
-    }
-
-    decrypt(encryptedText: EncryptedToken): string {
-        return this.encryptionService.decrypt(encryptedText.encrypted);
-    }
-}
+import { createClient, createAdminClient } from '../supabaseClient';
+import { EncryptionService } from './encryptionService';
 
 // Declare resource container
 interface Resources {
@@ -98,17 +53,8 @@ export function getSupabase(): SupabaseClient {
  */
 export function getSupabaseAdmin(): SupabaseClient {
     if (!resources.supabaseAdmin) {
-        // Create admin client using service role key instead of anon key
-        const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-        const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-
-        if (!supabaseUrl || !supabaseServiceKey) {
-            throw new Error('Missing Supabase URL or service role key');
-        }
-
-        // Use the standard createClient but with the service role key
-        const { createClient } = require('@supabase/supabase-js');
-        resources.supabaseAdmin = createClient(supabaseUrl, supabaseServiceKey);
+        // Use our dedicated admin client creator
+        resources.supabaseAdmin = createAdminClient();
     }
     // Type assertion since we ensure it's not null
     return resources.supabaseAdmin as SupabaseClient;
@@ -139,6 +85,36 @@ function createStripeClient(): Stripe {
  */
 export function isHealthCheckPath(path: string): boolean {
     return path === '/api/health' || path === '/health';
+}
+
+/**
+ * Check if Supabase connection is working
+ * @returns {Promise<{isConnected: boolean, error?: any}>} Connection status and error if any
+ */
+export async function checkSupabaseConnection(): Promise<{ isConnected: boolean, error?: any }> {
+    try {
+        console.log('Checking Supabase connection...');
+        // Get or initialize the Supabase admin client
+        const supabaseAdmin = getSupabaseAdmin();
+
+        // Perform a simple query that should always work if the connection is valid
+        // We'll just query the first row from the users table with a limit of 1
+        const { count, error } = await supabaseAdmin
+            .from('users')
+            .select('*', { count: 'exact', head: true })
+            .limit(1);
+
+        if (error) {
+            console.error('Supabase connection check failed:', error);
+            return { isConnected: false, error };
+        }
+
+        console.log('Supabase connection successful! Found', count, 'users in database.');
+        return { isConnected: true };
+    } catch (error) {
+        console.error('Error checking Supabase connection:', error);
+        return { isConnected: false, error };
+    }
 }
 
 /**
@@ -183,13 +159,20 @@ export async function initializeResources(requestPath?: string): Promise<Resourc
             // Initialize Supabase clients
             resources.supabase = getSupabase();
             resources.supabaseAdmin = getSupabaseAdmin();
+
+            // Check Supabase connection
+            const { isConnected, error } = await checkSupabaseConnection();
+            if (!isConnected) {
+                console.error('Failed to connect to Supabase during initialization:', error);
+                throw new Error(`Supabase connection failed: ${error?.message || 'Unknown error'}`);
+            }
+
             resources.stripeClient = createStripeClient();
 
             // Initialize services (in dependency order)
             resources.jwtService = new JwtService();
             resources.tokenService = new TokenService();
-            const googleEncryptionAdapter = new GoogleEncryptionAdapter(resources.encryptionService);
-            resources.googleAuthService = new GoogleAuthService(googleEncryptionAdapter);
+            resources.googleAuthService = new GoogleAuthService(resources.encryptionService);
             resources.supabaseAuthService = new SupabaseAuthService(resources.encryptionService);
 
             // Mark as initialized
