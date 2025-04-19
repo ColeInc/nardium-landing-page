@@ -27,7 +27,7 @@ export async function getOrInitResources(): Promise<Resources> {
     // Initialize services
     const encryptionService = new EncryptionService();
     const googleAuthService = new GoogleAuthService(encryptionService);
-    const supabaseAuthService = new SupabaseAuthService();
+    const supabaseAuthService = new SupabaseAuthService(encryptionService);
     const jwtService = new JwtService();
     const tokenService = new TokenService();
 

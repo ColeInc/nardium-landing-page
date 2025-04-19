@@ -25,6 +25,7 @@
     "encoding": "^0.1.13",
     "google-auth-library": "^9.15.1",
     "googleapis": "^148.0.0",
+    "jose": "^6.0.10",
     "jsonwebtoken": "^9.0.2",
     "next": "^13.4.7",
     "next-auth": "^4.24.11",

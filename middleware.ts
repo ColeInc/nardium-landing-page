@@ -14,7 +14,7 @@ const ALLOWED_ORIGIN = process.env.ALLOWED_ORIGINS || '*';
 console.log("Allowed origin: ", ALLOWED_ORIGIN);
 
 // This function can be marked `async` if using `await` inside
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
     const path = request.nextUrl.pathname;
     const fullUrl = request.url;
     console.log(`[Middleware] Processing request for path: ${path}`);
@@ -67,24 +67,42 @@ export function middleware(request: NextRequest) {
 
         console.log(`[Middleware] Protected API route, starting validation: ${path}`);
         // Validate the request with our middleware
-        const validationResponse = validateApiRequest(request);
+        try {
+            const validationResponse = await validateApiRequest(request);
 
-        // If validation failed, return the error response with CORS headers
-        if (validationResponse) {
-            console.log(`[Middleware] Validation failed for: ${path}`);
-            if (origin && (ALLOWED_ORIGIN === '*' || origin === ALLOWED_ORIGIN)) {
-                validationResponse.headers.set('Access-Control-Allow-Origin', origin);
-                validationResponse.headers.set('Access-Control-Allow-Credentials', 'true');
-            } else if (ALLOWED_ORIGIN === '*') {
-                validationResponse.headers.set('Access-Control-Allow-Origin', '*');
-                // Note: Cannot use wildcard with credentials
+            // If validation failed, return the error response with CORS headers
+            if (validationResponse) {
+                console.log(`[Middleware] Validation failed for: ${path}`);
+                if (origin && (ALLOWED_ORIGIN === '*' || origin === ALLOWED_ORIGIN)) {
+                    validationResponse.headers.set('Access-Control-Allow-Origin', origin);
+                    validationResponse.headers.set('Access-Control-Allow-Credentials', 'true');
+                } else if (ALLOWED_ORIGIN === '*') {
+                    validationResponse.headers.set('Access-Control-Allow-Origin', '*');
+                    // Note: Cannot use wildcard with credentials
+                }
+                return validationResponse;
             }
-            return validationResponse;
-        }
 
-        console.log(`[Middleware] Validation successful for: ${path}`);
-        // If validation passed, continue to the API route
-        return response;
+            console.log(`[Middleware] Validation successful for: ${path}`);
+            // If validation passed, continue to the API route
+            return response;
+        } catch (error) {
+            console.error(`[Middleware] Error validating request: ${error}`);
+            const errorResponse = NextResponse.json(
+                { error: 'Server error during authentication' },
+                { status: 500 }
+            );
+
+            // Add CORS headers to error response
+            if (origin && (ALLOWED_ORIGIN === '*' || origin === ALLOWED_ORIGIN)) {
+                errorResponse.headers.set('Access-Control-Allow-Origin', origin);
+                errorResponse.headers.set('Access-Control-Allow-Credentials', 'true');
+            } else if (ALLOWED_ORIGIN === '*') {
+                errorResponse.headers.set('Access-Control-Allow-Origin', '*');
+            }
+
+            return errorResponse;
+        }
     }
 
     console.log(`[Middleware] Non-API route, continuing: ${path}`);

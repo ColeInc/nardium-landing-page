@@ -15,7 +15,7 @@ declare module 'next/server' {
  * @param req The Next.js request object
  * @returns A NextResponse with 401/500 status if invalid, null if valid
  */
-export function validateApiRequest(req: NextRequest) {
+export async function validateApiRequest(req: NextRequest) {
     try {
         // Use the helper function to extract the authorization header
         const authHeader = extractAuthHeader(req);
@@ -48,8 +48,9 @@ export function validateApiRequest(req: NextRequest) {
 
         try {
             console.log('[validateApiRequest] Verifying JWT token...');
-            // Verify JWT token
-            const payload = jwtService.verifyToken(token);
+
+            // Use Edge-compatible verification method
+            const payload = await jwtService.verifyTokenEdge(token);
             console.log('[validateApiRequest] Token verified successfully for user:', payload.user_id);
 
             // Add user data to request
@@ -60,27 +61,8 @@ export function validateApiRequest(req: NextRequest) {
                 subscription_tier: payload.subscription_tier
             };
 
-            // Check if token needs refresh (handled by client)
-            console.log('[validateApiRequest] Checking if token needs refresh...');
-            const refreshedToken = jwtService.refreshTokenIfNeeded(token);
-
-            // Create response object with potential new token
+            // Create response object
             const response = NextResponse.next();
-
-            if (refreshedToken) {
-                console.log('[validateApiRequest] Token refreshed, setting header');
-                response.headers.set('X-New-Token', refreshedToken);
-            }
-
-            // Check API key if needed (optional - remove if not using API keys)
-            // const apiKey = req.headers.get('x-api-key');
-            // const validApiKey = process.env.API_KEY;
-            // if (validApiKey && (!apiKey || apiKey !== validApiKey)) {
-            //     return NextResponse.json(
-            //         { error: 'Unauthorized: Invalid or missing API key' },
-            //         { status: 401 }
-            //     );
-            // }
 
             // Request is valid
             return response;

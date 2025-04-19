@@ -190,7 +190,7 @@ export async function initializeResources(requestPath?: string): Promise<Resourc
             resources.tokenService = new TokenService();
             const googleEncryptionAdapter = new GoogleEncryptionAdapter(resources.encryptionService);
             resources.googleAuthService = new GoogleAuthService(googleEncryptionAdapter);
-            resources.supabaseAuthService = new SupabaseAuthService();
+            resources.supabaseAuthService = new SupabaseAuthService(resources.encryptionService);
 
             // Mark as initialized
             isInitialized = true;
