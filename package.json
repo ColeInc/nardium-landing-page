@@ -22,6 +22,7 @@
     "aos": "^3.0.0-beta.6",
     "bufferutil": "^4.0.9",
     "crypto": "^1.0.1",
+    "encoding": "^0.1.13",
     "google-auth-library": "^9.15.1",
     "googleapis": "^148.0.0",
     "jsonwebtoken": "^9.0.2",
@@ -30,6 +31,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "stripe": "^18.0.0",
+    "supports-color": "^10.0.0",
     "typescript": "^5.0.4",
     "utf-8-validate": "^6.0.5",
     "uuid": "^11.1.0"

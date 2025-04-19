@@ -1,8 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getOrInitResources } from '@/lib/services/init';
+import { getOrInitResources } from '@/lib/services/initialiseResources';
 import { cookies } from 'next/headers';
 
+console.log('========= BACKEND AUTH LOGOUT ROUTE MODULE LOADED =========');
+
 export async function GET(req: NextRequest) {
+    console.log('========= BACKEND AUTH LOGOUT HANDLER CALLED =========');
     try {
         // Get user ID from cookie if available
         const cookieStore = cookies();
@@ -16,16 +19,21 @@ export async function GET(req: NextRequest) {
                 const resources = await getOrInitResources();
                 const { jwtService } = resources;
 
+                if (!jwtService) {
+                    console.log('[BACKEND-LOGOUT] JWT service not available');
+                    throw new Error('JWT service not available');
+                }
+
                 // Properly decode the token
                 const decoded = jwtService.verifyToken(authToken.value) as { user_id: string };
                 userId = decoded.user_id;
             } catch (e) {
                 // If verification fails, continue with logout anyway
-                console.log('Error verifying token during logout:', e);
+                console.log('[BACKEND-LOGOUT] Error verifying token during logout:', e);
             }
         }
 
-        console.log(`Logging out user: ${userId}`);
+        console.log(`[BACKEND-LOGOUT] Logging out user: ${userId}`);
 
         // Create response with success message
         const response = NextResponse.json({
@@ -45,10 +53,10 @@ export async function GET(req: NextRequest) {
             sameSite: 'lax'
         });
 
-        console.log('Logout successful');
+        console.log('[BACKEND-LOGOUT] Logout successful');
         return response;
     } catch (error) {
-        console.error('Logout error:', error);
+        console.error('[BACKEND-LOGOUT] Logout error:', error);
         return NextResponse.json(
             { error: 'Failed to process logout' },
             { status: 500 }

@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server';
-import { JWTService } from './jwtService';
+import { JwtService } from './jwtService';
 
 /**
  * Extracts the authorization header from various places in the request
@@ -36,7 +36,7 @@ export function getAuthResources() {
     // This is a singleton pattern to ensure we only create one instance
     if (!global.authResources) {
         global.authResources = {
-            jwtService: new JWTService()
+            jwtService: new JwtService()
         };
     }
 
@@ -46,6 +46,6 @@ export function getAuthResources() {
 // Extending the NodeJS global interface to include our resources
 declare global {
     var authResources: {
-        jwtService: JWTService;
+        jwtService: JwtService;
     } | undefined;
 } 

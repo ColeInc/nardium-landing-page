@@ -17,6 +17,32 @@ const nextConfig = {
     // trailingSlash: true,
     // Optional: Change the output directory `out` -> `dist`
     // distDir: 'dist',
+    async headers() {
+        return [
+            {
+                // Apply these headers to all routes
+                source: '/api/:path*',
+                headers: [
+                    {
+                        key: 'Access-Control-Allow-Origin',
+                        value: 'chrome-extension://kdmdhielhebecglcnejeakebepepiogf',
+                    },
+                    {
+                        key: 'Access-Control-Allow-Methods',
+                        value: 'GET, POST, PUT, DELETE, OPTIONS',
+                    },
+                    {
+                        key: 'Access-Control-Allow-Headers',
+                        value: 'Content-Type, Authorization, X-Api-Key',
+                    },
+                    {
+                        key: 'Access-Control-Max-Age',
+                        value: '86400',
+                    },
+                ],
+            },
+        ];
+    },
 };
 
 module.exports = nextConfig;

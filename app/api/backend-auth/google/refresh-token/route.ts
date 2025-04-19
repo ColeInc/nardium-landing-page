@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getOrInitResources } from '@/lib/services/init';
+import { getOrInitResources } from '@/lib/services/initialiseResources';
 import { cookies } from 'next/headers';
 import { JWTPayload } from '@/lib/services/jwtService';
 
@@ -14,11 +14,13 @@ interface AccessTokenResponse {
     error?: string;
 }
 
+console.log('========= BACKEND AUTH GOOGLE REFRESH TOKEN ROUTE MODULE LOADED =========');
+
 export async function GET(req: NextRequest) {
     try {
-        console.log('[refreshAccessToken] START: Beginning access token refresh process');
-        console.log('[refreshAccessToken] Request path:', req.nextUrl.pathname);
-        console.log('[refreshAccessToken] Request headers:', JSON.stringify(Object.fromEntries(req.headers.entries())));
+        console.log('[BACKEND-refreshAccessToken] START: Beginning access token refresh process');
+        console.log('[BACKEND-refreshAccessToken] Request path:', req.nextUrl.pathname);
+        console.log('[BACKEND-refreshAccessToken] Request headers:', JSON.stringify(Object.fromEntries(req.headers.entries())));
 
         // Get user ID from JWT token (which was set in auth_token cookie)
         const cookieStore = cookies();
@@ -29,10 +31,10 @@ export async function GET(req: NextRequest) {
         let userId: string | undefined;
         let userEmail: string | undefined;
 
-        console.log('[refreshAccessToken] Auth token from cookie:', authToken ? 'Found' : 'Not found');
+        console.log('[BACKEND-refreshAccessToken] Auth token from cookie:', authToken ? 'Found' : 'Not found');
 
         if (!authToken) {
-            console.log('[refreshAccessToken] Error: No auth token found in cookies');
+            console.log('[BACKEND-refreshAccessToken] Error: No auth token found in cookies');
             return NextResponse.json(
                 { error: 'Unauthorized' },
                 { status: 401 }
@@ -40,19 +42,28 @@ export async function GET(req: NextRequest) {
         }
 
         // Get services
-        console.log('[refreshAccessToken] Getting resources...');
+        console.log('[BACKEND-refreshAccessToken] Getting resources...');
         const resources = await getOrInitResources();
-        console.log('[refreshAccessToken] Resources initialized');
+        console.log('[BACKEND-refreshAccessToken] Resources initialized');
 
         // Verify and extract user info from token
         const { jwtService } = resources;
+
+        if (!jwtService) {
+            console.error('[BACKEND-refreshAccessToken] JWT service not available');
+            return NextResponse.json(
+                { error: 'Server error: JWT service not available' },
+                { status: 500 }
+            );
+        }
+
         try {
             const decoded = jwtService.verifyToken(authToken) as JWTPayload & { user_id: string; email: string };
             userId = decoded.user_id;
             userEmail = decoded.email;
-            console.log('[refreshAccessToken] User ID from token:', userId);
+            console.log('[BACKEND-refreshAccessToken] User ID from token:', userId);
         } catch (error) {
-            console.log('[refreshAccessToken] Error verifying token:', error);
+            console.log('[BACKEND-refreshAccessToken] Error verifying token:', error);
             return NextResponse.json(
                 { error: 'Invalid token' },
                 { status: 401 }
@@ -60,7 +71,7 @@ export async function GET(req: NextRequest) {
         }
 
         if (!userId) {
-            console.log('[refreshAccessToken] Error: No user ID found in token');
+            console.log('[BACKEND-refreshAccessToken] Error: No user ID found in token');
             return NextResponse.json(
                 { error: 'Unauthorized' },
                 { status: 401 }
@@ -68,40 +79,40 @@ export async function GET(req: NextRequest) {
         }
 
         const { tokenService, googleAuthService } = resources;
-        console.log('[refreshAccessToken] Token service available:', !!tokenService);
-        console.log('[refreshAccessToken] Google auth service available:', !!googleAuthService);
+        console.log('[BACKEND-refreshAccessToken] Token service available:', !!tokenService);
+        console.log('[BACKEND-refreshAccessToken] Google auth service available:', !!googleAuthService);
 
         if (!tokenService || !googleAuthService) {
-            console.error('[refreshAccessToken] Required services not available');
+            console.error('[BACKEND-refreshAccessToken] Required services not available');
             return NextResponse.json(
                 { error: 'Server error: Services not initialized' },
                 { status: 500 }
             );
         }
 
-        console.log(`[refreshAccessToken] Fetching refresh token for user ${userId}`);
+        console.log(`[BACKEND-refreshAccessToken] Fetching refresh token for user ${userId}`);
         // Get the stored refresh token for this user
         const refreshToken = await tokenService.getRefreshToken(userId);
-        console.log('[refreshAccessToken] Refresh token retrieved:', refreshToken ? 'Found (length: ' + refreshToken.length + ')' : 'Not found');
+        console.log('[BACKEND-refreshAccessToken] Refresh token retrieved:', refreshToken ? 'Found (length: ' + refreshToken.length + ')' : 'Not found');
 
         if (!refreshToken) {
-            console.log(`[refreshAccessToken] Error: No refresh token found for user ${userId}`);
+            console.log(`[BACKEND-refreshAccessToken] Error: No refresh token found for user ${userId}`);
             return NextResponse.json(
                 { error: 'No refresh token found' },
                 { status: 401 }
             );
         }
 
-        console.log('[refreshAccessToken] Requesting new access token from Google');
+        console.log('[BACKEND-refreshAccessToken] Requesting new access token from Google');
         // Use the refresh token to get a new access token from Google
         const newTokens = await googleAuthService.refreshAccessToken(refreshToken);
-        console.log('[refreshAccessToken] New tokens received:', newTokens ? 'Success' : 'Failed');
-        console.log('[refreshAccessToken] Access token length:', newTokens.access_token?.length || 0);
+        console.log('[BACKEND-refreshAccessToken] New tokens received:', newTokens ? 'Success' : 'Failed');
+        console.log('[BACKEND-refreshAccessToken] Access token length:', newTokens.access_token?.length || 0);
 
-        console.log('[refreshAccessToken] Successfully obtained new access token');
+        console.log('[BACKEND-refreshAccessToken] Successfully obtained new access token');
 
         const expiryTime = new Date(Date.now() + (newTokens.expires_in * 1000));
-        console.log('[refreshAccessToken] Token expiry time:', expiryTime.toISOString());
+        console.log('[BACKEND-refreshAccessToken] Token expiry time:', expiryTime.toISOString());
 
         const response: AccessTokenResponse = {
             success: true,
@@ -112,10 +123,10 @@ export async function GET(req: NextRequest) {
             userId: userId
         };
 
-        console.log('[refreshAccessToken] END: Sending successful response');
+        console.log('[BACKEND-refreshAccessToken] END: Sending successful response');
         return NextResponse.json(response);
     } catch (error) {
-        console.error('[refreshAccessToken] Access token refresh error:', error);
+        console.error('[BACKEND-refreshAccessToken] Access token refresh error:', error);
         return NextResponse.json(
             { error: 'Failed to refresh access token' },
             { status: 500 }

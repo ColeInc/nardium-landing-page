@@ -2,6 +2,7 @@ import { GoogleAuthService } from './googleAuthService';
 import { SupabaseAuthService } from './supabaseAuthService';
 import { JwtService } from './jwtService';
 import { TokenService } from './tokenService';
+import { EncryptionService } from './encryptionService';
 
 // Define the resources interface
 interface Resources {
@@ -9,6 +10,7 @@ interface Resources {
     supabaseAuthService: SupabaseAuthService;
     jwtService: JwtService;
     tokenService: TokenService;
+    encryptionService: EncryptionService;
 }
 
 // Singleton instance
@@ -23,7 +25,8 @@ export async function getOrInitResources(): Promise<Resources> {
     }
 
     // Initialize services
-    const googleAuthService = new GoogleAuthService();
+    const encryptionService = new EncryptionService();
+    const googleAuthService = new GoogleAuthService(encryptionService);
     const supabaseAuthService = new SupabaseAuthService();
     const jwtService = new JwtService();
     const tokenService = new TokenService();
@@ -32,7 +35,8 @@ export async function getOrInitResources(): Promise<Resources> {
         googleAuthService,
         supabaseAuthService,
         jwtService,
-        tokenService
+        tokenService,
+        encryptionService
     };
 
     return resources;

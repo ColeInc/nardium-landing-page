@@ -1,5 +1,5 @@
 import { SupabaseClient } from '@supabase/supabase-js';
-import { GoogleAuthService } from './googleAuthService';
+import { GoogleAuthService, EncryptedToken } from './googleAuthService';
 import { TokenService } from './tokenService';
 import { SupabaseAuthService } from './supabaseAuthService';
 import { JwtService } from './jwtService';
@@ -25,6 +25,30 @@ export class EncryptionService {
             return encryptedData.substring(10);
         }
         return encryptedData;
+    }
+}
+
+/**
+ * Adapter for EncryptionService that implements the interface expected by GoogleAuthService
+ */
+class GoogleEncryptionAdapter {
+    private encryptionService: EncryptionService;
+
+    constructor(encryptionService: EncryptionService) {
+        this.encryptionService = encryptionService;
+    }
+
+    encrypt(text: string): EncryptedToken {
+        const encrypted = this.encryptionService.encrypt(text);
+        return {
+            iv: 'dummy-iv',
+            encrypted: encrypted,
+            authTag: 'dummy-tag'
+        };
+    }
+
+    decrypt(encryptedText: EncryptedToken): string {
+        return this.encryptionService.decrypt(encryptedText.encrypted);
     }
 }
 
@@ -164,7 +188,8 @@ export async function initializeResources(requestPath?: string): Promise<Resourc
             // Initialize services (in dependency order)
             resources.jwtService = new JwtService();
             resources.tokenService = new TokenService();
-            resources.googleAuthService = new GoogleAuthService();
+            const googleEncryptionAdapter = new GoogleEncryptionAdapter(resources.encryptionService);
+            resources.googleAuthService = new GoogleAuthService(googleEncryptionAdapter);
             resources.supabaseAuthService = new SupabaseAuthService();
 
             // Mark as initialized
